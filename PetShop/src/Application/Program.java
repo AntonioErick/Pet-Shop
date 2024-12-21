@@ -125,6 +125,8 @@ public class Program {
 			}
 		}while(op != 8);
 		
+		//System.out.println("Leaving...");
+		
 		sc.close();
 	}
 
