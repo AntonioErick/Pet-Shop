@@ -53,26 +53,36 @@ public class Program {
 					
 					clientList.add(new Client(name, phone, address, id));
 				}
+				System.out.println(" ");
+				System.out.println("Clients added!");
 				
 				menu();
 				op = sc.nextInt();
 				break;
 				
 			case 2:
-				System.out.print("How many clients do you want to remove? ");
-				int n1 = sc.nextInt();
-				
-				if(n1 > clientList.size()) {
-					System.out.println("The number of clients to remove cannot exceed the number of clients in the list.");
+				if(clientList.isEmpty()) {
+					System.out.println("There is no client registed.");
 					menu();
 					op = sc.nextInt();
 					break;
 				}
 				else {
-					for(int i = 0; i < n1; i++) {
-						System.out.print("Enter the client's ID that you want to remove:");
-						int id = sc.nextInt();
-						removeClient(clientList, id);
+					System.out.print("How many clients do you want to remove? ");
+					int n1 = sc.nextInt();
+					
+					if(n1 > clientList.size()) {
+						System.out.println("The number of clients to remove cannot exceed the number of clients in the list.");
+						menu();
+						op = sc.nextInt();
+						break;
+					}
+					else {
+						for(int i = 0; i < n1; i++) {
+							System.out.print("Enter the client's ID that you want to remove:");
+							int id = sc.nextInt();
+							removeClient(clientList, id);
+						}
 					}
 				}
 				
@@ -102,8 +112,7 @@ public class Program {
 					
 					System.out.print("Enter the ID of the client to associate this animal: ");
 					for(int i = 0; i < n2; i++) {
-						sc.nextLine();
-						
+				
 						int clientId = sc.nextInt();
 						
 						Client client = clientList.stream().filter(x -> x.getId() == clientId).findFirst().orElse(null);
@@ -128,6 +137,8 @@ public class Program {
 						animal.setOwner(client);
 						animalList.add(animal);
 					}
+					System.out.println(" ");
+					System.out.println("Animals added!");
 				}
 				
 				menu();
@@ -147,7 +158,40 @@ public class Program {
 				break;
 				
 			case 5:
-				System.out.println("working on it");
+				sc.nextLine();
+				System.out.print("Enter the animal's name you want to edit: ");
+				String editAnimal = sc.nextLine();
+				
+				System.out.println("-------------------------------------------------");
+				Animal animalEdit = animalList.stream().filter(x -> x.getName().equals(editAnimal)).findFirst().orElse(null);
+				
+				if (animalEdit != null) {
+					System.out.println("Animal found -> "+animalEdit);
+					
+					System.out.print("Enter a new name or press [ENTER] to keep "+ animalEdit.getName()+": ");
+					String newName = sc.nextLine();
+					if(!newName.isEmpty()) {
+						animalEdit.setName(newName);
+					}
+					
+					System.out.print("Enter a new specie or press [ENTER] to keep "+ animalEdit.getSpecie()+": ");
+					String newSpecie = sc.nextLine();
+					if(!newSpecie.isEmpty()) {
+						animalEdit.setSpecie(newSpecie);
+					}
+					
+					System.out.println("Enter a new healt status or press [ENTER] to keep "+ animalEdit.getHealth()+": ");
+					String newHealth = sc.nextLine();
+					if(!newHealth.isEmpty()) {
+						animalEdit.setHealth(newHealth);
+					}
+					
+					System.out.println("Animal register edited!");
+				}
+				else {
+					System.out.println("Animal not found.");
+				}
+				
 				menu();
 				op = sc.nextInt();
 				break;
