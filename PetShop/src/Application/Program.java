@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 import Utilities.Client;
+import Utilities.Animal;
 
 public class Program {
 
@@ -15,6 +16,7 @@ public class Program {
 		Locale.setDefault(Locale.US);
 
 		List<Client> clientList = new ArrayList<>();
+		List<Animal> animalList = new ArrayList<>();
 		
 		menu();
 		int op = sc.nextInt();
@@ -30,7 +32,7 @@ public class Program {
 					sc.nextLine();
 					System.out.println("--------------------------------------");
 					
-					System.out.println("Enter "+(i+1)+"° client ID: ");
+					System.out.print("Enter "+(i+1)+"° client ID: ");
 					int id = sc.nextInt();
 					
 					while(hasId(clientList, id)) {
@@ -39,13 +41,13 @@ public class Program {
 					}
 					
 					sc.nextLine();
-					System.out.println("Enter "+(i+1)+"° client name: ");
+					System.out.print("Enter "+(i+1)+"° client name: ");
 					String name = sc.nextLine();
 					
-					System.out.println("Enter "+(i+1)+"° client address: ");
+					System.out.print("Enter "+(i+1)+"° client address: ");
 					String address = sc.nextLine();
 					
-					System.out.println("Enter "+(i+1)+"° client phone: ");
+					System.out.print("Enter "+(i+1)+"° client phone: ");
 					int phone = sc.nextInt();
 					
 					clientList.add(new Client(name, phone, address, id));
@@ -78,13 +80,38 @@ public class Program {
 				break;
 				
 			case 3:
-				System.out.println("working on it");
+				
+				System.out.print("How many animals do you want to add? ");
+				int n2 = sc.nextInt();
+				
+				for(int i = 0; i < n2; i++) {
+					sc.nextLine();
+					System.out.println("--------------------------------------");
+					
+					System.out.print("Enter "+(i+1)+"° animal specie: ");
+					String specie = sc.nextLine();
+		
+					System.out.print("Enter "+(i+1)+"° animal name: ");
+					String name = sc.nextLine();
+					
+					System.out.print("Enter "+(i+1)+"° animal health status: ");
+					String health = sc.next();
+					
+					animalList.add(new Animal(name, specie, health));
+				}
+				
 				menu();
 				op = sc.nextInt();
 				break;
 				
 			case 4:
-				System.out.println("working on it");
+				sc.nextLine();
+				
+				System.out.print("Enter the animal's name tha you want to remove: ");
+				String nameAnimalRemove = sc.nextLine();
+				
+				removeAniaml(animalList, nameAnimalRemove);
+				
 				menu();
 				op = sc.nextInt();
 				break;
@@ -96,7 +123,13 @@ public class Program {
 				break;
 				
 			case 6:
-				System.out.println("working on it");
+				sc.nextLine();
+				
+				System.out.println("Enter the animal name: ");
+				String nameAnimalSearch = sc.nextLine();
+				
+				System.out.println(searchAnimal(animalList, nameAnimalSearch));
+				
 				menu();
 				op = sc.nextInt();
 				break;
@@ -124,8 +157,6 @@ public class Program {
 				break;
 			}
 		}while(op != 8);
-		
-		//System.out.println("Leaving...");
 		
 		sc.close();
 	}
@@ -159,4 +190,19 @@ public class Program {
 		}
 	}
 	
+	private static String searchAnimal(List<Animal> animalList, String name) {
+		Animal ani = animalList.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null); //.equals() compara o conteúdo de Strings
+		return (ani != null) ? ani.toString() : "Animal not found"; 
+	}
+	
+	private static void removeAniaml(List<Animal> animalList, String name) {
+		Animal ani = animalList.stream().filter(x -> x.getName().equals(name)).findFirst().orElse(null);
+		if(ani == null) {
+			System.out.println("Animal does not exist");
+		}
+		else {
+			animalList.remove(ani);
+			System.out.println("Animal successfully removed!");
+		}
+	}
 }
