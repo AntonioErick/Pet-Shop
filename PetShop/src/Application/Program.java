@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import Utilities.Client;
 import Utilities.Animal;
@@ -81,23 +82,52 @@ public class Program {
 				
 			case 3:
 				
-				System.out.print("How many animals do you want to add? ");
-				int n2 = sc.nextInt();
+				if(clientList.isEmpty()) {
+					System.out.println("No registered clients. Add clients first.");
+					menu();
+					op = sc.nextInt();
+					break;
+				}
 				
-				for(int i = 0; i < n2; i++) {
-					sc.nextLine();
-					System.out.println("--------------------------------------");
+				else {
+					System.out.print("How many animals do you want to add? ");
+					int n2 = sc.nextInt();
 					
-					System.out.print("Enter "+(i+1)+"° animal specie: ");
-					String specie = sc.nextLine();
-		
-					System.out.print("Enter "+(i+1)+"° animal name: ");
-					String name = sc.nextLine();
+					System.out.println("-------------------------------------------------");
+					System.out.println("Clients: ");
+					for(Client client : clientList) {
+						System.out.println(client);
+					}
+					System.out.println("-------------------------------------------------");
 					
-					System.out.print("Enter "+(i+1)+"° animal health status: ");
-					String health = sc.next();
-					
-					animalList.add(new Animal(name, specie, health));
+					System.out.print("Enter the ID of the client to associate this animal: ");
+					for(int i = 0; i < n2; i++) {
+						sc.nextLine();
+						
+						int clientId = sc.nextInt();
+						
+						Client client = clientList.stream().filter(x -> x.getId() == clientId).findFirst().orElse(null);
+						if(client == null) {
+							System.out.print("Invalid client ID. Try again: ");
+							i--;
+							continue; //pula para a próxima repetição
+						}
+						
+						System.out.println("-------------------------------------------------");
+						sc.nextLine();
+						System.out.print("Enter "+(i+1)+"° animal specie: ");
+						String specie = sc.nextLine();
+			
+						System.out.print("Enter "+(i+1)+"° animal name: ");
+						String name = sc.nextLine();
+						
+						System.out.print("Enter "+(i+1)+"° animal health status: ");
+						String health = sc.nextLine();
+						
+						Animal animal = new Animal(name, specie, health);
+						animal.setOwner(client);
+						animalList.add(animal);
+					}
 				}
 				
 				menu();
@@ -141,6 +171,18 @@ public class Program {
 				else {
 					for(Client x : clientList) {
 						System.out.println(x);
+					
+						List<Animal> associatedAnimal = animalList.stream().filter(animal -> animal.getOwner() != null && animal.getOwner().getId() == x.getId()) .collect(Collectors.toList());
+					
+						if(associatedAnimal.isEmpty()) {
+							System.out.println("No animals associated.");
+						}
+						else {
+							System.out.println("Animals: ");
+							for(Animal y : associatedAnimal) {
+								System.out.println("["+y+"]");
+							}
+						}
 					}
 				}
 				menu();

@@ -5,9 +5,7 @@ public class Animal {
 	private String name;
 	private String specie;
 	private String health;
-	
-	public Animal() {
-	}
+	private Client owner;
 	
 	public Animal(String name, String specie, String health) {
 		this.name = name;
@@ -39,9 +37,18 @@ public class Animal {
 		this.specie = specie;
 	}
 	
+	public Client getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Client owner) {
+		this.owner = owner;
+	}
+
 	public String toString() {
 		return "NAME: "+name+
 				", SPECIE: "+specie+
-				", HEALTH: "+health;
+				", HEALTH: "+health+
+				(owner != null ? ", OWNER: "+owner.getName() : "");
 	}
 }
