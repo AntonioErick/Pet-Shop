@@ -148,7 +148,6 @@ public class Program {
 				break;
 				
 			case 8:
-				System.out.println("Leaving...");
 				break;
 				
 			default:
@@ -157,6 +156,8 @@ public class Program {
 				break;
 			}
 		}while(op != 8);
+		
+		System.out.println("Leaving...");
 		
 		sc.close();
 	}
