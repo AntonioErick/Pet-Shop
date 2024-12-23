@@ -20,25 +20,24 @@ public class Program {
 		List<Animal> animalList = new ArrayList<>();
 		
 		menu();
-		int op = sc.nextInt();
+		int op =  getValidNumber(sc);
 		
 		do {
 			switch(op) {
 			case 1:
 				
 				System.out.print("How many clients do you want to add? ");
-				int n = sc.nextInt();
+				int n = getValidNumber(sc);
 				
 				for(int i = 0; i < n; i++) {
 					sc.nextLine();
-					System.out.println("--------------------------------------");
 					
 					System.out.print("Enter "+(i+1)+"° client ID: ");
-					int id = sc.nextInt();
+					int id = getValidNumber(sc);
 					
 					while(hasId(clientList, id)) {
 						System.out.print("ID already taken, Try again: ");
-						id = sc.nextInt();
+						id = getValidNumber(sc);
 					}
 					
 					sc.nextLine();
@@ -49,7 +48,7 @@ public class Program {
 					String address = sc.nextLine();
 					
 					System.out.print("Enter "+(i+1)+"° client phone: ");
-					int phone = sc.nextInt();
+					int phone = getValidNumber(sc);
 					
 					clientList.add(new Client(name, phone, address, id));
 				}
@@ -57,37 +56,37 @@ public class Program {
 				System.out.println("Clients added!");
 				
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 2:
 				if(clientList.isEmpty()) {
 					System.out.println("There is no client registed.");
 					menu();
-					op = sc.nextInt();
+					op = getValidNumber(sc);
 					break;
 				}
 				else {
 					System.out.print("How many clients do you want to remove? ");
-					int n1 = sc.nextInt();
+					int n1 = getValidNumber(sc);
 					
 					if(n1 > clientList.size()) {
 						System.out.println("The number of clients to remove cannot exceed the number of clients in the list.");
 						menu();
-						op = sc.nextInt();
+						op = getValidNumber(sc);
 						break;
 					}
 					else {
 						for(int i = 0; i < n1; i++) {
 							System.out.print("Enter the client's ID that you want to remove:");
-							int id = sc.nextInt();
+							int id = getValidNumber(sc);
 							removeClient(clientList, id);
 						}
 					}
 				}
 				
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 3:
@@ -95,15 +94,14 @@ public class Program {
 				if(clientList.isEmpty()) {
 					System.out.println("No registered clients. Add clients first.");
 					menu();
-					op = sc.nextInt();
+					op = getValidNumber(sc);
 					break;
 				}
 				
 				else {
 					System.out.print("How many animals do you want to add? ");
-					int n2 = sc.nextInt();
+					int n2 = getValidNumber(sc);
 					
-					System.out.println("-------------------------------------------------");
 					System.out.println("Clients: ");
 					for(Client client : clientList) {
 						System.out.println(client);
@@ -113,7 +111,7 @@ public class Program {
 					System.out.print("Enter the ID of the client to associate this animal: ");
 					for(int i = 0; i < n2; i++) {
 				
-						int clientId = sc.nextInt();
+						int clientId = getValidNumber(sc);
 						
 						Client client = clientList.stream().filter(x -> x.getId() == clientId).findFirst().orElse(null);
 						if(client == null) {
@@ -122,7 +120,6 @@ public class Program {
 							continue; //pula para a próxima repetição
 						}
 						
-						System.out.println("-------------------------------------------------");
 						sc.nextLine();
 						System.out.print("Enter "+(i+1)+"° animal specie: ");
 						String specie = sc.nextLine();
@@ -142,7 +139,7 @@ public class Program {
 				}
 				
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 4:
@@ -154,7 +151,7 @@ public class Program {
 				removeAniaml(animalList, nameAnimalRemove);
 				
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 5:
@@ -193,7 +190,7 @@ public class Program {
 				}
 				
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 6:
@@ -205,7 +202,7 @@ public class Program {
 				System.out.println(searchAnimal(animalList, nameAnimalSearch));
 				
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 7:
@@ -230,15 +227,14 @@ public class Program {
 					}
 				}
 				menu();
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 				
 			case 8:
 				break;
 				
 			default:
-				System.out.print("Invalid Option. Try again: ");
-				op = sc.nextInt();
+				op = getValidNumber(sc);
 				break;
 			}
 		}while(op != 8);
@@ -291,5 +287,22 @@ public class Program {
 			animalList.remove(ani);
 			System.out.println("Animal successfully removed!");
 		}
+	}
+	
+	public static int getValidNumber(Scanner sc) {
+		 int number = -1;
+		    while (number < 0) { 
+		        if (sc.hasNextInt()) {
+		            number = sc.nextInt(); 
+		            if (number < 0) { 
+		                System.out.println("The number must be non-negative. Try again.");
+		            }
+		        } else {
+		            System.out.print("Invalid input. Please enter a valid number: ");
+		            sc.next(); 
+		        }
+		    }
+		    System.out.println("--------------------------------------");
+		    return number;
 	}
 }
