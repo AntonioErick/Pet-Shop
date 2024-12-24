@@ -42,7 +42,7 @@ public class Program {
 					
 					sc.nextLine();
 					System.out.print("Enter "+(i+1)+"° client name: ");
-					String name = sc.nextLine();
+					String name = getValidString(sc);
 					
 					System.out.print("Enter "+(i+1)+"° client address: ");
 					String address = sc.nextLine();
@@ -52,7 +52,6 @@ public class Program {
 					
 					clientList.add(new Client(name, phone, address, id));
 				}
-				System.out.println(" ");
 				System.out.println("Clients added!");
 				
 				menu();
@@ -122,19 +121,18 @@ public class Program {
 						
 						sc.nextLine();
 						System.out.print("Enter "+(i+1)+"° animal specie: ");
-						String specie = sc.nextLine();
+						String specie = getValidString(sc);
 			
 						System.out.print("Enter "+(i+1)+"° animal name: ");
-						String name = sc.nextLine();
+						String name = getValidString(sc);
 						
 						System.out.print("Enter "+(i+1)+"° animal health status: ");
-						String health = sc.nextLine();
+						String health = getValidString(sc);
 						
 						Animal animal = new Animal(name, specie, health);
 						animal.setOwner(client);
 						animalList.add(animal);
 					}
-					System.out.println(" ");
 					System.out.println("Animals added!");
 				}
 				
@@ -146,7 +144,7 @@ public class Program {
 				sc.nextLine();
 				
 				System.out.print("Enter the animal's name tha you want to remove: ");
-				String nameAnimalRemove = sc.nextLine();
+				String nameAnimalRemove = getValidString(sc);
 				
 				removeAniaml(animalList, nameAnimalRemove);
 				
@@ -157,7 +155,7 @@ public class Program {
 			case 5:
 				sc.nextLine();
 				System.out.print("Enter the animal's name you want to edit: ");
-				String editAnimal = sc.nextLine();
+				String editAnimal = getValidString(sc);
 				
 				System.out.println("-------------------------------------------------");
 				Animal animalEdit = animalList.stream().filter(x -> x.getName().equals(editAnimal)).findFirst().orElse(null);
@@ -166,19 +164,19 @@ public class Program {
 					System.out.println("Animal found -> "+animalEdit);
 					
 					System.out.print("Enter a new name or press [ENTER] to keep "+ animalEdit.getName()+": ");
-					String newName = sc.nextLine();
+					String newName = getValidString(sc);
 					if(!newName.isEmpty()) {
 						animalEdit.setName(newName);
 					}
 					
 					System.out.print("Enter a new specie or press [ENTER] to keep "+ animalEdit.getSpecie()+": ");
-					String newSpecie = sc.nextLine();
+					String newSpecie = getValidString(sc);
 					if(!newSpecie.isEmpty()) {
 						animalEdit.setSpecie(newSpecie);
 					}
 					
 					System.out.println("Enter a new healt status or press [ENTER] to keep "+ animalEdit.getHealth()+": ");
-					String newHealth = sc.nextLine();
+					String newHealth = getValidString(sc);
 					if(!newHealth.isEmpty()) {
 						animalEdit.setHealth(newHealth);
 					}
@@ -197,7 +195,7 @@ public class Program {
 				sc.nextLine();
 				
 				System.out.println("Enter the animal name: ");
-				String nameAnimalSearch = sc.nextLine();
+				String nameAnimalSearch = getValidString(sc);
 				
 				System.out.println(searchAnimal(animalList, nameAnimalSearch));
 				
@@ -302,7 +300,29 @@ public class Program {
 		            sc.next(); 
 		        }
 		    }
-		    System.out.println("--------------------------------------");
+		    System.out.println("-------------------------------------------------");
 		    return number;
+	}
+	
+	public static String getValidString(Scanner sc) {
+		String input = "";
+		boolean isValid;
+		
+		do {
+			input = sc.nextLine();
+			isValid = true;
+			
+			for(int i = 0; i < input.length(); i++) {
+				char c = input.charAt(i);
+				if(!Character.isLetter(c) && c != ' ') {
+					isValid = false;
+					System.out.print("Only letters and spaces are allowed. Try again: ");
+					break;
+				}
+			}
+		}while(!isValid);
+		
+		System.out.println("-------------------------------------------------");
+		return input.trim(); //trim() remove espaços em branco do início e do final de uma string, mas não afeta os espaços no meio da string.
 	}
 }
