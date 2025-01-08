@@ -98,9 +98,6 @@ public class Program {
 				}
 				
 				else {
-					System.out.print("How many animals do you want to add? ");
-					int n2 = getValidNumber(sc);
-					
 					System.out.println("Clients: ");
 					for(Client client : clientList) {
 						System.out.println(client);
@@ -108,32 +105,30 @@ public class Program {
 					System.out.println("-------------------------------------------------");
 					
 					System.out.print("Enter the ID of the client to associate this animal: ");
-					for(int i = 0; i < n2; i++) {
-				
-						int clientId = getValidNumber(sc);
-						
-						Client client = clientList.stream().filter(x -> x.getId() == clientId).findFirst().orElse(null);
-						if(client == null) {
-							System.out.print("Invalid client ID. Try again: ");
-							i--;
-							continue; //pula para a próxima repetição
-						}
-						
+					
+					int clientId = getValidNumber(sc);
+					
+					Client client = clientList.stream().filter(x -> x.getId() == clientId).findFirst().orElse(null);
+					if(client == null) {
+						System.out.print("Invalid client ID. Returning to menu. ");
+					}
+					else {
 						sc.nextLine();
-						System.out.print("Enter "+(i+1)+"° animal specie: ");
+						System.out.print("Enter the animal specie: ");
 						String specie = getValidString(sc);
 			
-						System.out.print("Enter "+(i+1)+"° animal name: ");
+						System.out.print("Enter the animal name: ");
 						String name = getValidString(sc);
 						
-						System.out.print("Enter "+(i+1)+"° animal health status: ");
-						String health = getValidString(sc);
+						System.out.print("Enter the animal health status: ");
+						String health = getValidString(sc).trim();
 						
 						Animal animal = new Animal(name, specie, health);
 						animal.setOwner(client);
 						animalList.add(animal);
 					}
-					System.out.println("Animals added!");
+		
+				System.out.println("Animals added!");
 				}
 				
 				menu();
@@ -323,6 +318,6 @@ public class Program {
 		}while(!isValid);
 		
 		System.out.println("-------------------------------------------------");
-		return input.trim(); //trim() remove espaços em branco do início e do final de uma string, mas não afeta os espaços no meio da string.
+		return input.trim(); //trim() remove espaços em branco do início e do final de uma string.
 	}
 }
